@@ -1,7 +1,7 @@
 package com.restaurant.jwts.security.services;
 
-import com.restaurant.jwts.models.User;
-import com.restaurant.jwts.repository.UserRepository;
+import com.restaurant.user.entities.UserEntity;
+import com.restaurant.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,15 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
-  UserRepository userRepository;
+  UserService userService;
 
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findByUsername(username)
+    UserEntity userEntity = userService.findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-    return UserDetailsImpl.build(user);
+    return UserDetailsImpl.build(userEntity);
   }
 
 }
