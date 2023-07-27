@@ -3,6 +3,7 @@ package com.restaurant.jwts.controllers;
 
 import com.restaurant.role.domains.ERole;
 import com.restaurant.role.entities.RoleEntity;
+import com.restaurant.role.exceptions.RoleException;
 import com.restaurant.user.domains.UserStatusEnum;
 import com.restaurant.user.entities.UserEntity;
 import com.restaurant.jwts.payload.request.LoginRequest;
@@ -87,7 +88,7 @@ public class AuthController {
                signUpRequest.getEmail(),
                encoder.encode(signUpRequest.getPassword()));
 
-    Set<String> strRoles = signUpRequest.getRole();
+    Set<ERole> strRoles = signUpRequest.getRoles();
     Set<RoleEntity> roleEntities = new HashSet<>();
 
     if (strRoles == null) {
@@ -97,15 +98,27 @@ public class AuthController {
     } else {
       strRoles.forEach(role -> {
         switch (role) {
-        case "admin":
+        case ROLE_ADMIN:
           RoleEntity adminRoleEntity = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              .orElseThrow(() -> new RoleException("Error: Role is not found."));
           roleEntities.add(adminRoleEntity);
 
           break;
-        case "mod":
+          case ROLE_RESTAURANT:
+            RoleEntity restRoleEntity = roleRepository.findByName(ERole.ROLE_RESTAURANT)
+                    .orElseThrow(() -> new RoleException("Error: Role is not found."));
+            roleEntities.add(restRoleEntity);
+
+            break;
+          case ROLE_CUSTOMER:
+            RoleEntity cusRoleEntity = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+                    .orElseThrow(() -> new RoleException("Error: Role is not found."));
+            roleEntities.add(cusRoleEntity);
+
+            break;
+        case ROLE_MODERATOR:
           RoleEntity modRoleEntity = roleRepository.findByName(ERole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              .orElseThrow(() -> new RoleException("Error: Role is not found."));
           roleEntities.add(modRoleEntity);
 
           break;

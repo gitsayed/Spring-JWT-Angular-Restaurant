@@ -1,8 +1,7 @@
 package com.restaurant.food.service;
 
-import com.restaurant.category.domains.CategoryDomain;
-import com.restaurant.category.entities.CategoryEntity;
 import com.restaurant.food.domains.FoodDomain;
+import com.restaurant.food.entities.FoodEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 public interface FoodService {
 
-    Page<CategoryEntity> findFoodInfo(Pageable pageable, Integer id, String name);
+    Page<FoodEntity> findFoodInfo(Pageable pageable, Integer id, String name, Long price);
 
     void saveFood(FoodDomain foodDomain);
 
@@ -18,5 +17,7 @@ public interface FoodService {
 
     boolean existsById(Integer id);
 
-    List<CategoryEntity> getAllCategory();
+    List<FoodEntity> getAllFoods();
+
+    FoodEntity findFoodInfoById(Integer id);
 }

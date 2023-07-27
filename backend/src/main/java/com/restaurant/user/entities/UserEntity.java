@@ -1,5 +1,6 @@
 package com.restaurant.user.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.restaurant.role.entities.RoleEntity;
 import com.restaurant.user.domains.UserStatusEnum;
 import org.hibernate.annotations.CreationTimestamp;
@@ -45,14 +46,21 @@ public class UserEntity {
         inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<RoleEntity> roleEntities = new HashSet<>();
 
-  @CreationTimestamp
-  private LocalDateTime createdAt;
-  @UpdateTimestamp
-  private LocalDateTime updatedAt;
+
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private UserStatusEnum userStatus;
 
+  @JsonIgnore
+  private String createdBy;
+  @JsonIgnore
+  private String updatedBy;
+  @JsonIgnore
+  @CreationTimestamp
+  private LocalDateTime createdAt;
+  @JsonIgnore
+  @UpdateTimestamp
+  private LocalDateTime updatedAt;
   public UserEntity() {
   }
 

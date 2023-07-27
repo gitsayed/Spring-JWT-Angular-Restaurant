@@ -12,7 +12,7 @@ public class FoodDomain {
     private String name;
     private Integer categoryId;
     private String foodType;
-    private Long promoPrice;
+    private Long offerPrice;
     private Long actualPrice;
     private Integer restaurantId;
 }

@@ -6,7 +6,6 @@
       class="profile-img-card"
     />
     <form
-      *ngIf="!isLoggedIn"
       name="form"
       (ngSubmit)="f.form.valid && onSubmit()"
       #f="ngForm"
@@ -21,12 +20,9 @@
           [(ngModel)]="form.username"
           required
           #username="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && username.errors }"
         />
-        <div
-          class="alert alert-danger"
-          role="alert"
-          *ngIf="f.submitted && username.invalid"
-        >
+        <div *ngIf="username.errors && f.submitted" class="invalid-feedback">
           Username is required!
         </div>
       </div>
@@ -38,17 +34,14 @@
           name="password"
           [(ngModel)]="form.password"
           required
-          minlength="6"
+          minlength="3"
           #password="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && password.errors }"
         />
-        <div
-          class="alert alert-danger"
-          role="alert"
-          *ngIf="f.submitted && password.invalid"
-        >
-          <div *ngIf="password.errors.required">Password is required</div>
-          <div *ngIf="password.errors.minlength">
-            Password must be at least 6 characters
+        <div *ngIf="password.errors && f.submitted" class="invalid-feedback">
+          <div *ngIf="password.errors['required']">Password is required</div>
+          <div *ngIf="password.errors['minlength']">
+            Password must be at least 3 characters
           </div>
         </div>
       </div>
@@ -58,18 +51,12 @@
         </button>
       </div>
       <div class="form-group">
-        <div
-          class="alert alert-danger"
-          role="alert"
-          *ngIf="f.submitted && isLoginFailed"
-        >
+        <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger" role="alert">
           Login failed: {{ errorMessage }}
         </div>
       </div>
     </form>
 
-    <div class="alert alert-success" *ngIf="isLoggedIn">
-      Logged in as {{ roles }}.
-    </div>
+  
   </div>
 </div>

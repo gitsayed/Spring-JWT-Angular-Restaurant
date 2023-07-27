@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { baseURL } from '../constants';
 
-const AUTH_API = environment.baseURL +'/api/v1/auth/';
+const AUTH_API = baseURL +'/api/v1/auth/';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -14,20 +14,35 @@ const httpOptions = {
 })
 export class AuthService {
 
+
+customerRole=["ROLE_CUSTOMER"];
+restaurantRole=["ROLE_RESTAURANT"];
+
   constructor(private http: HttpClient) { }
 
-  login(credentials): Observable<any> {
-    return this.http.post(AUTH_API + 'signin', {
-      username: credentials.username,
-      password: credentials.password
-    }, httpOptions);
+  login(username: string, password: string): Observable<any> {
+    return this.http.post(
+      AUTH_API + 'signin',
+      {
+        username,
+        password,
+      },
+      httpOptions
+    );
   }
 
-  register(user): Observable<any> {
-    return this.http.post(AUTH_API + 'signup', {
-      username: user.username,
-      email: user.email,
-      password: user.password
-    }, httpOptions);
+
+
+  register(username: string, email: string, password: string, category: string): Observable<any> {
+    return this.http.post(
+      AUTH_API + 'signup',
+      {
+        username,
+        email,
+        password,
+        roles:category==='restaurant'?this.restaurantRole:this.customerRole
+      },
+      httpOptions
+    );
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from './_services/token-storage.service';
 
-import {  PrimeNGConfig } from 'primeng-lts/api';
+import {  PrimeNGConfig } from 'primeng/api';
 
 
 @Component({
@@ -9,11 +9,12 @@ import {  PrimeNGConfig } from 'primeng-lts/api';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  private roles: string[];
+  private roles: string[]=[];
   isLoggedIn = false;
   showAdminBoard = false;
-  showModeratorBoard = false;
-  username: string;
+  isCustomer = false;
+  isRestuarant= false;
+  username: string='';
 
   constructor(private tokenStorageService: TokenStorageService,
     private primengConfig: PrimeNGConfig,
@@ -31,8 +32,8 @@ export class AppComponent implements OnInit {
       this.roles = user.roles;
 
       this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-      this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
-
+      this.isCustomer = this.roles.includes('ROLE_CUSTOMER');
+      this.isRestuarant = this.roles.includes('ROLE_RESTAURANT');
       this.username = user.username;
     }
   }

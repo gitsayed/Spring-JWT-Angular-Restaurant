@@ -26,24 +26,27 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     // Check if the user is logged in and has the required role
     const isLoggedIn = this.tokenStorageService.getIsLoggedIn();
-    const roles = route.data.roles as string[];
+    const roles : string[] = route.data['roles'] ;
 
     if (isLoggedIn) {
+ 
       // Check if the user has the required role
       if (roles && roles.length > 0) {
         // Implement your role check logic here
-        const userRoles = ['user']; // Replace with actual user roles from your authentication system
+        const userRoles :string[] = this.tokenStorageService.getUser().roles;
         const hasRequiredRole = userRoles.some(role => roles.includes(role));
 
         if (!hasRequiredRole) {
-          // Redirect to a default route if the user does not have the required role
+          
           this.router.navigate(['/invalid-access']);
           return false;
         }
+        return true;
       }
       return true;
+    
     } else {
-      // Redirect to the login page if the user is not logged in
+    
       this.router.navigate(['/login']);
       return false;
     }

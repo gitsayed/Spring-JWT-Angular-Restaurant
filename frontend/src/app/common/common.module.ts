@@ -1,16 +1,27 @@
 import { NgModule } from "@angular/core";
-import { authInterceptorProviders } from "../_helpers/auth.interceptor";
-import { ButtonModule } from "primeng-lts/button";
+
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { ToastModule } from 'primeng/toast';
+import { DropdownModule } from 'primeng/dropdown';
+
 
 @NgModule({
     declarations: [
     
     ],
     imports: [
-   ButtonModule
+   ButtonModule,
+   CardModule,
+   ToastModule,
+   DropdownModule
+  
     ],
     exports: [
-   ButtonModule
+   ButtonModule,
+   CardModule,
+   ToastModule,
+   DropdownModule
     ],
     providers: [],
     

@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserEntity> findByUsername(String username) {
 
-        return this.userRepository.findByUsernameAndAndUserStatus(username, UserStatusEnum.ACTIVE);
+        return this.userRepository.findByUsernameAndUserStatus(username, UserStatusEnum.ACTIVE);
 
     }
 

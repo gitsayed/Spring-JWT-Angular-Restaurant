@@ -17,10 +17,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'super-admin', loadChildren:  './modules/super-admin/super-admin.module#SuperAdminModule' ,canActivate: [AuthGuard] },
+  { path: 'admin', loadChildren: () => import( './modules/super-admin/super-admin.module').then((m) => m.SuperAdminModule) ,canActivate: [AuthGuard] },
   { path: 'user', component: BoardUserComponent, canActivate: [AuthGuard], data: {roles: ['ROLE_USER']} },
   { path: 'mod', component: BoardModeratorComponent },
-  { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMIN']} },
+  { path: 'admin2', component: BoardAdminComponent, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMIN']} },
   { path: 'invalid-access', component: InvalidAccessComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
