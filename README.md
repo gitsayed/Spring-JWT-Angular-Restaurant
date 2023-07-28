@@ -11,6 +11,7 @@ Technologies are following we use here:
 4: Maven build tool.<br>
 5: Tomcat Server [embedded with springboot]. <br>
 6: Node JS 18.
+7: JWT Spring Authentication.
 
 Description of steps to deploy the project.
 
