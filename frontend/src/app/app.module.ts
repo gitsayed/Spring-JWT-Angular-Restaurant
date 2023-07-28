@@ -17,7 +17,8 @@ import { BoardUserComponent } from './board-user/board-user.component';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { InvalidAccessComponent } from './invalid-access/invalid-access.component';
 import { CommonPrimeNgModule } from './common/common.module';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -33,13 +34,20 @@ import { MessageService } from 'primeng/api';
   ],
   imports: [
     BrowserAnimationsModule,
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     CommonPrimeNgModule
   ],
-  providers: [authInterceptorProviders, MessageService],
+  exports:[
+    CommonModule
+  ],
+  providers: [authInterceptorProviders,
+     MessageService,
+     ConfirmationService
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

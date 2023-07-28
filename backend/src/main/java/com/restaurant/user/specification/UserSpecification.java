@@ -34,7 +34,7 @@ public class UserSpecification {
             if (userStatus != null) {
                 predicate = cb.and(predicate, cb.equal(root.get("userStatus"), userStatus));
             }
-
+           query.orderBy(cb.desc(root.get("createdAt")));
             return predicate;
         };
 

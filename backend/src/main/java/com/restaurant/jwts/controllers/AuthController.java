@@ -132,6 +132,7 @@ public class AuthController {
 
     userEntity.setRoleEntities(roleEntities);
     userEntity.setUserStatus(UserStatusEnum.IN_ACTIVE);
+    userEntity.setCreatedBy("system");
     userRepository.save(userEntity);
 
     return ResponseEntity.ok(new MessageResponse("User save successfully! Wait For Activation."));

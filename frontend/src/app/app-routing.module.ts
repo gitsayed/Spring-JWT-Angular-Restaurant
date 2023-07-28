@@ -10,14 +10,13 @@ import { BoardModeratorComponent } from './board-moderator/board-moderator.compo
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { InvalidAccessComponent } from './invalid-access/invalid-access.component';
 import { AuthGuard } from './_authGuard/auth.guard';
-import { SuperAdminModule } from './modules/super-admin/super-admin.module';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'admin', loadChildren: () => import( './modules/super-admin/super-admin.module').then((m) => m.SuperAdminModule) ,canActivate: [AuthGuard] },
+  { path: 'admin', loadChildren: () => import( './modules/admin-module/admin.module').then((m) => m.AdminModule) ,canActivate: [AuthGuard] },
   { path: 'user', component: BoardUserComponent, canActivate: [AuthGuard], data: {roles: ['ROLE_USER']} },
   { path: 'mod', component: BoardModeratorComponent },
   { path: 'admin2', component: BoardAdminComponent, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMIN']} },
