@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../_services/user.service';
+import { TokenStorageService } from '../_services/token-storage.service';
+import { ToastService } from '../_services/toast.services';
 
 @Component({
   selector: 'app-home',
@@ -8,19 +10,20 @@ import { UserService } from '../_services/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  content: string;
+  isLoggedIn: boolean=false;
+  content: string='';
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private toast: ToastService,
+    private storageService: TokenStorageService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.getPublicContent().subscribe(
-      data => {
-        this.content = data;
-      },
-      err => {
-        this.content = JSON.parse(err.error).message;
-      }
-    );
+   this.isLoggedIn=this.storageService.getIsLoggedIn();
+
+   if(this.isLoggedIn){
+   
+   }
   }
 
 }

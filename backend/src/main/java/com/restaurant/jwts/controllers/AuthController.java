@@ -1,15 +1,17 @@
 package com.restaurant.jwts.controllers;
 
 
-import com.restaurant.jwts.models.ERole;
-import com.restaurant.jwts.models.Role;
-import com.restaurant.jwts.models.User;
+import com.restaurant.role.domains.ERole;
+import com.restaurant.role.entities.RoleEntity;
+import com.restaurant.role.exceptions.RoleException;
+import com.restaurant.user.domains.UserStatusEnum;
+import com.restaurant.user.entities.UserEntity;
 import com.restaurant.jwts.payload.request.LoginRequest;
 import com.restaurant.jwts.payload.request.SignupRequest;
 import com.restaurant.jwts.payload.response.JwtResponse;
 import com.restaurant.jwts.payload.response.MessageResponse;
 import com.restaurant.jwts.repository.RoleRepository;
-import com.restaurant.jwts.repository.UserRepository;
+import com.restaurant.user.repositories.UserRepository;
 import com.restaurant.jwts.security.jwt.JwtUtils;
 import com.restaurant.jwts.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
   @Autowired
   AuthenticationManager authenticationManager;
@@ -82,43 +84,57 @@ public class AuthController {
     }
 
     // Create new user's account
-    User user = new User(signUpRequest.getUsername(),
+    UserEntity userEntity = new UserEntity(signUpRequest.getUsername(),
                signUpRequest.getEmail(),
                encoder.encode(signUpRequest.getPassword()));
 
-    Set<String> strRoles = signUpRequest.getRole();
-    Set<Role> roles = new HashSet<>();
+    Set<ERole> strRoles = signUpRequest.getRoles();
+    Set<RoleEntity> roleEntities = new HashSet<>();
 
     if (strRoles == null) {
-      Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+      RoleEntity userRoleEntity = roleRepository.findByName(ERole.ROLE_USER)
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(userRole);
+      roleEntities.add(userRoleEntity);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
+        case ROLE_ADMIN:
+          RoleEntity adminRoleEntity = roleRepository.findByName(ERole.ROLE_ADMIN)
+              .orElseThrow(() -> new RoleException("Error: Role is not found."));
+          roleEntities.add(adminRoleEntity);
 
           break;
-        case "mod":
-          Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
+          case ROLE_RESTAURANT:
+            RoleEntity restRoleEntity = roleRepository.findByName(ERole.ROLE_RESTAURANT)
+                    .orElseThrow(() -> new RoleException("Error: Role is not found."));
+            roleEntities.add(restRoleEntity);
+
+            break;
+          case ROLE_CUSTOMER:
+            RoleEntity cusRoleEntity = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+                    .orElseThrow(() -> new RoleException("Error: Role is not found."));
+            roleEntities.add(cusRoleEntity);
+
+            break;
+        case ROLE_MODERATOR:
+          RoleEntity modRoleEntity = roleRepository.findByName(ERole.ROLE_MODERATOR)
+              .orElseThrow(() -> new RoleException("Error: Role is not found."));
+          roleEntities.add(modRoleEntity);
 
           break;
         default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+          RoleEntity userRoleEntity = roleRepository.findByName(ERole.ROLE_USER)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
+          roleEntities.add(userRoleEntity);
         }
       });
     }
 
-    user.setRoles(roles);
-    userRepository.save(user);
+    userEntity.setRoleEntities(roleEntities);
+    userEntity.setUserStatus(UserStatusEnum.IN_ACTIVE);
+    userEntity.setCreatedBy("system");
+    userRepository.save(userEntity);
 
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    return ResponseEntity.ok(new MessageResponse("User save successfully! Wait For Activation."));
   }
 }

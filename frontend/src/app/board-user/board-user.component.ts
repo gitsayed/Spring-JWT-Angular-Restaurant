@@ -8,7 +8,7 @@ import { UserService } from '../_services/user.service';
 })
 export class BoardUserComponent implements OnInit {
 
-  content: string;
+  content: string='';
 
   constructor(private userService: UserService) { }
 

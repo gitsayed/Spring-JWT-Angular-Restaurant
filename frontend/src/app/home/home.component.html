@@ -1,5 +1,26 @@
-<div class="container">
-  <header class="jumbotron">
-    <p>{{ content }}</p>
-  </header>
-</div>
+<div style="margin-left: 5%;">
+  <div style="margin-left: 10%;">
+    <header class="jumbotron" style="width: 80%;">
+      <h1>
+        <p>{{ 'Welcome To Online Restaurant'}}</p>
+        <br />
+        <p *ngIf="!isLoggedIn">Login to Enter </p>
+      </h1>
+    </header>
+
+  </div>
+
+    <div *ngIf="isLoggedIn">
+      <p-card [style]="{ width: '360px' }">
+        <ng-template pTemplate="header">
+          Header content here
+        </ng-template>
+        Body Content
+        <ng-template pTemplate="footer">
+          <!-- <p-button label="Add to Cart" icon="pi pi-check"></p-button> -->
+
+        </ng-template>
+      </p-card>
+
+    </div>
+  </div>
